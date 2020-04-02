@@ -12,7 +12,7 @@ https://github.com/M4tir/Github-Monitor
 
 使用方法：
 
-代码第16行的token修改为钉钉机器人token，如何设置钉钉机器人请自行谷歌
+代码第16行的token修改为钉钉机器人token，在20行修改secret，如何设置钉钉机器人请自行谷歌
 
 ```
 python3 github_monitor.py
