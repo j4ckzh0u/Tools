@@ -13,11 +13,11 @@ github api 参数参考：https://blog.csdn.net/Next_Second/article/details/7823
 '''
 
 # 这里放钉钉机器人的token
-token = "xxxxxxx"
+token = "xxxxx"
 
 def getTimestampAndSign():
     timestamp = (round(time.time() * 1000))
-    secret = 'SEC1exxxxx'
+    secret = 'SEC1exxxxxxxx'
     secret_enc = secret.encode('utf-8')
     string_to_sign = '{}\n{}'.format(timestamp, secret)
     string_to_sign_enc = (string_to_sign).encode('utf-8')
@@ -89,14 +89,14 @@ def getallrce():
                 insert(d["id"],d["svn_url"],d["description"],d["updated_at"])
         time.sleep(6)
 
-def getcve():
+def get2020cve():
     nr = requests.get(url='https://api.github.com/search/repositories?q=CVE-2020&sort=updated&order=desc&per_page=50').text
     data = json.loads(nr)
     for d in data['items']:
         if check(d["id"]):
             insert(d["id"],d["svn_url"],d["description"],d["updated_at"])
             with open("log.txt", 'a+') as file_object:
-                file_object.write(d["svn_url"]+"  "+d["description"])
+                file_object.write(str(d["svn_url"])+"  "+str(d["description"]))
             content = """## Github 发现了新漏洞
 url: {url}
 
@@ -109,6 +109,25 @@ url: {url}
             push_DingMes(content)
 
 
+def get2019cve():
+    nr = requests.get(url='https://api.github.com/search/repositories?q=CVE-2019&sort=updated&order=desc&per_page=50').text
+    data = json.loads(nr)
+    for d in data['items']:
+        if check(d["id"]):
+            insert(d["id"],d["svn_url"],d["description"],d["updated_at"])
+            with open("log.txt", 'a+') as file_object:
+                file_object.write(str(d["svn_url"])+"  "+str(d["description"]))
+            content = """## Github 发现了新漏洞
+url: {url}
+
+描述: {description}
+
+发现时间: {create_time}
+
+请及时查看和处理
+""".format(url=d["svn_url"], description=d["description"],create_time=time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
+            push_DingMes(content)
+
 def getrce():
     nr = requests.get(url='https://api.github.com/search/repositories?q=rce poc&sort=updated&order=desc&per_page=50').text
     data = json.loads(nr)
@@ -116,7 +135,7 @@ def getrce():
         if check(d["id"]):
             insert(d["id"],d["svn_url"],d["description"],d["updated_at"])
             with open("log.txt", 'a+') as file_object:
-                file_object.write(d["svn_url"]+"  "+d["description"])
+                file_object.write(str(d["svn_url"])+"  "+str(d["description"]))
             content = """## Github 发现了新漏洞
 url: {url}
 
@@ -166,7 +185,13 @@ if __name__ == "__main__":
     # getall2020cve()
     # getallrce()
     while(1):
-        getcve()
-        getrce()
-        time.sleep(300)
+        try:
+            print(str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + "  进行监测扫描")
+            get2019cve()
+            get2020cve()
+            getrce()
+            time.sleep(600)
+        except:
+            pass
+
 
