@@ -191,6 +191,8 @@ if __name__ == "__main__":
             get2020cve()
             getrce()
             time.sleep(600)
+        except KeyboardInterrupt:
+            exit(0)
         except:
             pass
 
