@@ -96,7 +96,7 @@ def get2020cve():
         if check(d["id"]):
             insert(d["id"],d["svn_url"],d["description"],d["updated_at"])
             with open("log.txt", 'a+') as file_object:
-                file_object.write(str(d["svn_url"])+"  "+str(d["description"]))
+                file_object.write(str(d["svn_url"])+"  "+str(d["description"])+"\n")
             content = """## Github 发现了新漏洞
 url: {url}
 
@@ -116,7 +116,7 @@ def get2019cve():
         if check(d["id"]):
             insert(d["id"],d["svn_url"],d["description"],d["updated_at"])
             with open("log.txt", 'a+') as file_object:
-                file_object.write(str(d["svn_url"])+"  "+str(d["description"]))
+                file_object.write(str(d["svn_url"])+"  "+str(d["description"])+"\n")
             content = """## Github 发现了新漏洞
 url: {url}
 
@@ -135,7 +135,7 @@ def getrce():
         if check(d["id"]):
             insert(d["id"],d["svn_url"],d["description"],d["updated_at"])
             with open("log.txt", 'a+') as file_object:
-                file_object.write(str(d["svn_url"])+"  "+str(d["description"]))
+                file_object.write(str(d["svn_url"])+"  "+str(d["description"])+"\n")
             content = """## Github 发现了新漏洞
 url: {url}
 
